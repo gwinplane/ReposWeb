@@ -1,0 +1,83 @@
+﻿@model List<AddressManagementWeb.Models.Address>
+
+@{
+    ViewData["Title"] = "Address Management";
+}
+
+<div class="page">
+    <div class="card">
+        <div class="card-header">
+            <h1>🏠 Address Management</h1>
+
+            <a asp-controller="Address"
+               asp-action="Create"
+               class="btn btn-primary">
+                ➕ Add address
+            </a>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-wrapper">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Street</th>
+                            <th>House</th>
+                            <th>Postal</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var address in Model)
+                        {
+                            <tr>
+                                <td>@address.Id</td>
+                                <td>@address.Street</td>
+                                <td>@address.HouseNumber</td>
+                                <td>@address.PostalCode</td>
+                                <td>@address.City</td>
+                                <td>@address.Country</td>
+                                <td class="actions">
+                                    <form asp-controller="Address"
+                                          asp-action="Delete"
+                                          method="post">
+                                        <input type="hidden" name="id" value="@address.Id" />
+                                        <button class="btn btn-danger"
+                                                onclick="return confirm('Delete this address?')">
+                                            🗑
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="empty">
+                <p>No addresses yet</p>
+                <span>Click “Add address” to get started</span>
+            </div>
+        }
+    </div>
+</div>
